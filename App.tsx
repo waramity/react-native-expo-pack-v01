@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { ReactElement } from 'react';
+import { View, ViewStyle } from 'react-native';
+import CameraComponent from './components/common/CameraComponent';
 
-export default function App() {
+const App: React.FC = (): ReactElement => {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <CameraComponent />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
+const styles: { [key: string]: ViewStyle } = {
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-});
+};
+
+export default App;
