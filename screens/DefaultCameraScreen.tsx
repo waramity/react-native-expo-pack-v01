@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import BackButton from '../components/core/BackButton'
 import CameraComponent from '../components/common/CameraComponent'
 
 const DefaultCameraScreen = () => {
@@ -10,8 +9,7 @@ const DefaultCameraScreen = () => {
 
   return (
     <View style={styles.container}>
-	<DefaultCameraScreen />
-	<BackButton onPress={handleBackButtonPress}/>
+	  <CameraComponent />
     </View>
   );
 };

@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import DefaultButton from '../components/core/DefaultButton'
+import { Button, View, StyleSheet, Text } from 'react-native';
 
 const MainScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-	<DefaultButton title="Default Camera"/>
+	       <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Default Camera')}
+      />
       <Text>Main Screen</Text>
     </View>
   );

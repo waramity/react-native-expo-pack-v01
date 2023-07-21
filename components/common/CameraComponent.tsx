@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
-import BackButton from '../core/BackButton'; // Import the BackButton component from the separate file
 
 export default function CameraComponent() {
   const [type, setType] = useState<CameraType>(CameraType.back);
@@ -35,7 +34,6 @@ function handleBackButtonPress() {
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
         <View style={styles.buttonContainer}>
-	  <BackButton onPress={handleBackButtonPress} />
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
             <Text style={styles.text}>ku</Text>
           </TouchableOpacity>
