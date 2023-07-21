@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
+import FlipCameraButton from './FlipCameraButton'
 
 export default function CameraComponent() {
   const [type, setType] = useState<CameraType>(CameraType.back);
@@ -33,11 +34,7 @@ function handleBackButtonPress() {
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>ku</Text>
-          </TouchableOpacity>
-        </View>
+	  <FlipCameraButton onPress={toggleCameraType} />
       </Camera>
     </View>
   );
