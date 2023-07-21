@@ -3,7 +3,11 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType, PermissionResponse } from 'expo-camera';
 import FlipCameraButton from './FlipCameraButton'
 
-export default function CameraComponent() {
+interface CameraComponentProps {
+}
+
+const CameraComponent: React.FC<CameraComponentProps> = () => {
+
   const [type, setType] = useState<CameraType>(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -26,11 +30,6 @@ export default function CameraComponent() {
     setType((current: CameraType) => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
-function handleBackButtonPress() {
-    // Your logic for handling the back button press goes here
-    console.log('Back button pressed!');
-  };
-
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
@@ -48,21 +47,6 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
 });
 
+export default CameraComponent

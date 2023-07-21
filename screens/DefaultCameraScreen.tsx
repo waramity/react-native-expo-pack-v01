@@ -3,10 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import CameraComponent from '../components/common/CameraComponent'
 
 const DefaultCameraScreen = () => {
-  const handleBackButtonPress = () => {
-    console.log('Back button pressed');
-  };
-
   return (
     <View style={styles.container}>
 	  <CameraComponent />
