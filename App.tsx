@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { View, ViewStyle, Button } from 'react-native';
-import CameraComponent from './components/common/CameraComponent';
+import DefaultCameraScreen from './screens/DefaultCameraScreen';
 
 const App: React.FC = (): ReactElement => {
   const [showCamera, setShowCamera] = useState(false);
@@ -12,7 +12,7 @@ const App: React.FC = (): ReactElement => {
   return (
     <View style={styles.container}>
       {showCamera ? (
-        <CameraComponent />
+        <DefaultCameraScreen />
       ) : (
         <Button title="Camera Component" onPress={toggleCamera} />
       )}
