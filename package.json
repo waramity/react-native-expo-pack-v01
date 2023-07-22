@@ -13,6 +13,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@tensorflow/tfjs": "^4.9.0",
+    "@tensorflow/tfjs-react-native": "^0.8.0",
     "expo": "~48.0.18",
     "expo-camera": "~13.2.1",
     "expo-gl": "~12.4.0",
