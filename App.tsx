@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './screens/MainScreen';
 import DefaultCameraScreen from './screens/DefaultCameraScreen';
+import ObjectDetectionCameraScreen from './screens/ObjectDetectionCameraScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const App: React.FC = (): React.ReactElement => {
       <Stack.Navigator initialRouteName="Main">
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="Default Camera" component={DefaultCameraScreen} />
+        <Stack.Screen name="Object Detection Camera Screen" component={ObjectDetectionCameraScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

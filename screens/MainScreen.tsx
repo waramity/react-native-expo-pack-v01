@@ -5,10 +5,14 @@ const MainScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
 	       <Button
-        title="Go to Details"
+        title="Default Camera"
         onPress={() => navigation.navigate('Default Camera')}
       />
-      <Text>Main Screen</Text>
+
+	       <Button
+        title="Object Detection Camera Screen"
+        onPress={() => navigation.navigate('Object Detection Camera Screen')}
+      />
     </View>
   );
 };
