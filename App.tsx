@@ -20,21 +20,21 @@ const App: React.FC = (): React.ReactElement => {
 
 export default App;
 //
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Dimensions, Platform } from 'react-native';
+//import React, { useEffect, useState, useRef } from 'react';
+//import { StyleSheet, Text, View, Dimensions, Platform } from 'react-native';
 
-import { Camera } from 'expo-camera';
+//import { Camera } from 'expo-camera';
 
-import * as tf from '@tensorflow/tfjs';
-import * as posedetection from '@tensorflow-models/pose-detection';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import {
-  bundleResourceIO,
-  cameraWithTensors,
-} from '@tensorflow/tfjs-react-native';
-import Svg, { Circle } from 'react-native-svg';
-import { ExpoWebGLRenderingContext } from 'expo-gl';
-import { CameraType } from 'expo-camera/build/Camera.types';
+//import * as tf from '@tensorflow/tfjs';
+//import * as posedetection from '@tensorflow-models/pose-detection';
+//import * as ScreenOrientation from 'expo-screen-orientation';
+//import {
+//  bundleResourceIO,
+//  cameraWithTensors,
+//} from '@tensorflow/tfjs-react-native';
+//import Svg, { Circle } from 'react-native-svg';
+//import { ExpoWebGLRenderingContext } from 'expo-gl';
+//import { CameraType } from 'expo-camera/build/Camera.types';
 
 //// tslint:disable-next-line: variable-name
 //const TensorCamera = cameraWithTensors(Camera);
