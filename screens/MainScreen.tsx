@@ -1,17 +1,17 @@
-import React from 'react';
-import { Button, View, StyleSheet, Text } from 'react-native';
+import React from "react";
+import { Button, View, StyleSheet, Text } from "react-native";
 
-const MainScreen = ({navigation}: {navigation: any}) => {
+const MainScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
-	       <Button
+      <Button
         title="Default Camera"
-        onPress={() => navigation.navigate('Default Camera')}
+        onPress={() => navigation.navigate("Default Camera")}
       />
 
-	       <Button
-        title="Object Detection Camera Screen"
-        onPress={() => navigation.navigate('Object Detection Camera Screen')}
+      <Button
+        title="Tensor Camera"
+        onPress={() => navigation.navigate("Tensor Camera")}
       />
     </View>
   );
