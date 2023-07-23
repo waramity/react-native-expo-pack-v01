@@ -14,7 +14,7 @@ export default function RealtimeObjectRecognizeScreen() {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [net, setNet] = useState<mobilenet.MobileNet>();
 
-  const load = async () => {
+  const loadModel = async () => {
     try {
       setNet(async () => await mobilenet.load());
       console.log("model loaded");
@@ -22,8 +22,15 @@ export default function RealtimeObjectRecognizeScreen() {
       console.log("model not loaded");
     }
   };
+
   useEffect(() => {
-    load();
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+
+      console.log("set permission");
+    })();
+    loadModel();
   }, []);
 
   if (hasPermission === null) {
@@ -66,9 +73,7 @@ export default function RealtimeObjectRecognizeScreen() {
     <View style={styles.container}>
       <TensorCamera
         style={styles.camera}
-        onReady={() => {
-          handleCameraStream();
-        }}
+        onReady={handleCameraStream}
         resizeHeight={200}
         resizeWidth={152}
         resizeDepth={3}
