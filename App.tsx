@@ -7,6 +7,7 @@ import * as tf from "@tensorflow/tfjs";
 import MainScreen from "./screens/MainScreen";
 import DefaultCameraScreen from "./screens/DefaultCameraScreen";
 import TensorCameraScreen from "./screens/TensorCameraScreen";
+import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,10 @@ const App: React.FC = (): React.ReactElement => {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="Default Camera" component={DefaultCameraScreen} />
         <Stack.Screen name="Tensor Camera" component={TensorCameraScreen} />
+        <Stack.Screen
+          name="Realtime Object Recognize"
+          component={RealtimeObjectRecognizeScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -13,6 +13,11 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Tensor Camera"
         onPress={() => navigation.navigate("Tensor Camera")}
       />
+
+      <Button
+        title="Realtime Object Recognize"
+        onPress={() => navigation.navigate("Realtime Object Recognize")}
+      />
     </View>
   );
 };
