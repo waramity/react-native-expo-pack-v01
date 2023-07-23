@@ -17,6 +17,7 @@ interface AppState {
 
 const App: React.FC = (): React.ReactElement => {
   const [isTfReady, setIsTfReady] = useState(false);
+
   useEffect(() => {
     // Wait for tf to be ready.
     const initializeTensorFlow = async () => {
@@ -26,6 +27,7 @@ const App: React.FC = (): React.ReactElement => {
     };
     initializeTensorFlow();
   }, []);
+
   console.log(isTfReady);
 
   return (
