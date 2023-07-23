@@ -9,7 +9,7 @@ import * as tf from "@tensorflow/tfjs-core";
 
 const TensorCamera = cameraWithTensors(Camera);
 
-export default function TensorCameraScreen() {
+const TensorCameraScreen: React.FC = (): React.ReactElement => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function TensorCameraScreen() {
       />
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default TensorCameraScreen;
 
 //class ObjectDetectionCameraScreen extends React.Component<{}> {
 //  handleCameraStream = (

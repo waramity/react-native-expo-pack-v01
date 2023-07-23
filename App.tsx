@@ -8,6 +8,7 @@ import MainScreen from "./screens/MainScreen";
 import DefaultCameraScreen from "./screens/DefaultCameraScreen";
 import TensorCameraScreen from "./screens/TensorCameraScreen";
 import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
+import * as mobilenet from "@tensorflow-models/mobilenet";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,21 +29,21 @@ const App: React.FC = (): React.ReactElement => {
     initializeTensorFlow();
   }, []);
 
-  console.log(isTfReady);
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="Default Camera" component={DefaultCameraScreen} />
-        <Stack.Screen name="Tensor Camera" component={TensorCameraScreen} />
-        <Stack.Screen
-          name="Realtime Object Recognize"
-          component={RealtimeObjectRecognizeScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  if (isTfReady) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Main">
+          <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="Default Camera" component={DefaultCameraScreen} />
+          <Stack.Screen name="Tensor Camera" component={TensorCameraScreen} />
+          <Stack.Screen
+            name="Realtime Object Recognize"
+            component={RealtimeObjectRecognizeScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 };
 
 export default App;
