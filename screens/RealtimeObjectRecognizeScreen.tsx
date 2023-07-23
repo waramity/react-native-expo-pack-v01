@@ -16,7 +16,8 @@ export default function RealtimeObjectRecognizeScreen() {
 
   const loadModel = async () => {
     try {
-      setNet(async () => await mobilenet.load());
+      const model = await mobilenet.load();
+      setNet(model); // Set the loaded model to the state
       console.log("model loaded");
     } catch (err) {
       console.log("model not loaded");
