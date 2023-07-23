@@ -5,7 +5,7 @@ import CameraComponent from "../components/common/CameraComponent";
 import { Camera, CameraType } from "expo-camera";
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
 import { GLView, ExpoWebGLRenderingContext } from "expo-gl";
-import * as tf from "@tensorflow/tfjs-core";
+import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
 const TensorCamera = cameraWithTensors(Camera);
@@ -15,13 +15,11 @@ export default function RealtimeObjectRecognizeScreen() {
   const [net, setNet] = useState<mobilenet.MobileNet>();
 
   const loadModel = async () => {
-    try {
-      const model = await mobilenet.load();
-      setNet(model); // Set the loaded model to the state
-      console.log("model loaded");
-    } catch (err) {
-      console.log("model not loaded");
-    }
+    console.log("Load model");
+    const model = await mobilenet.load();
+    console.log("Type of model:", typeof model);
+    setNet(model); // Set the loaded model to the state
+    console.log("model loaded");
   };
 
   useEffect(() => {
