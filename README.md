@@ -7,6 +7,8 @@ project-name/\
 │ └── ...\
 ├── components/\
 │ ├── common/\
+│ ├── loaders/\
+│ │ └── ProgressBar.js\
 │ ├── screens/\
 │ └── ...\
 ├── navigation/\
@@ -23,7 +25,7 @@ project-name/\
 ├── utils/\
 │ ├── helpers.js\
 │ ├── constants.js\
-│ └── ...\
+│ └── useLoadingProgress.js\
 ├── App.js\
 ├── package.json\
 ├── yarn.lock (or package-lock.json)\
