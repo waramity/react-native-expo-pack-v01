@@ -15,41 +15,24 @@ import { GLView, ExpoWebGLRenderingContext } from "expo-gl";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
+import ProgressBar from "../components/loaders/ProgressBar"; // Import the ProgressBar component
+import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
+
+import { useModelLoader } from "../hooks/useModelLoader"; // Import the custom hook
+
 const TensorCamera = cameraWithTensors(Camera);
 
 export default function RealtimeObjectRecognizeScreen() {
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
-  const [net, setNet] = useState<mobilenet.MobileNet>();
+  const model = useModelLoader();
   const [classifiedText, setClassifiedText] = useState("Initial Text");
-
-  const loadModel = async () => {
-    const model = await mobilenet.load();
-    setNet(model); // Set the loaded model to the state
-  };
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
-
-      setNet(await mobilenet.load());
     })();
-
-    loadModel();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLoadingProgress((prevProgress) => {
-        if (prevProgress >= 0.9) {
-          clearInterval(interval);
-        }
-        return prevProgress + 0.1;
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
   }, []);
 
   let frame = 0;
@@ -57,12 +40,11 @@ export default function RealtimeObjectRecognizeScreen() {
 
   const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
     const loop = async () => {
-      if (net) {
+      if (model) {
         if (frame % computeRecognitionEveryNFrames === 0) {
           const nextImageTensor = images.next().value;
           if (nextImageTensor) {
-            const objects = await net.classify(nextImageTensor);
-            console.log(objects.map((object) => object.className));
+            const objects = await model.classify(nextImageTensor);
             setClassifiedText(objects.map((object) => object.className));
             tf.dispose([nextImageTensor]);
           }
@@ -76,20 +58,6 @@ export default function RealtimeObjectRecognizeScreen() {
     loop();
   };
 
-  const renderProgressBar = () => {
-    if (Platform.OS === "ios") {
-      return <ProgressViewIOS progress={loadingProgress} />;
-    } else {
-      return (
-        <ProgressBarAndroid
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={loadingProgress}
-        />
-      );
-    }
-  };
-
   if (hasPermission === null) {
     return <View />;
   }
@@ -98,8 +66,8 @@ export default function RealtimeObjectRecognizeScreen() {
     return <Text>No access to camera</Text>;
   }
 
-  if (!net) {
-    return renderProgressBar();
+  if (!model) {
+    return <ProgressBar loadingProgress={loadingProgress} />;
   }
 
   const textureDims =

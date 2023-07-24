@@ -3,8 +3,10 @@ import { View, StyleSheet, Text } from "react-native";
 
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+
 import ProgressBar from "../components/loaders/ProgressBar"; // Import the ProgressBar component
 import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
+
 import { useModelLoader } from "../hooks/useModelLoader"; // Import the custom hook
 
 export default function LoadModelScreen() {
