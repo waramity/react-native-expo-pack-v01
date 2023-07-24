@@ -24,11 +24,8 @@ export default function RealtimeObjectRecognizeScreen() {
   const [classifiedText, setClassifiedText] = useState("Initial Text");
 
   const loadModel = async () => {
-    console.log("Load model");
     const model = await mobilenet.load();
-    console.log("Type of model:", typeof model);
     setNet(model); // Set the loaded model to the state
-    console.log("model loaded");
   };
 
   useEffect(() => {
@@ -36,10 +33,7 @@ export default function RealtimeObjectRecognizeScreen() {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
 
-      console.log("set permission");
       setNet(await mobilenet.load());
-
-      console.log("model loaded");
     })();
 
     loadModel();
@@ -83,11 +77,6 @@ export default function RealtimeObjectRecognizeScreen() {
   };
 
   const renderProgressBar = () => {
-    // if (loadingProgress >= 1) {
-    //   // Model has been loaded, render your main component here
-    //   return <MainComponent net={net} />;
-    // }
-
     if (Platform.OS === "ios") {
       return <ProgressViewIOS progress={loadingProgress} />;
     } else {
@@ -102,7 +91,6 @@ export default function RealtimeObjectRecognizeScreen() {
   };
 
   if (hasPermission === null) {
-    console.log("permission is null");
     return <View />;
   }
 
