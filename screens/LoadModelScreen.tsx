@@ -4,9 +4,10 @@ import { View, StyleSheet, Text } from "react-native";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import ProgressBar from "../components/loaders/ProgressBar"; // Import the ProgressBar component
+import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
 
 export default function LoadModelScreen() {
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
   const [net, setNet] = useState<mobilenet.MobileNet>();
 
   const loadModel = async () => {
@@ -16,19 +17,6 @@ export default function LoadModelScreen() {
 
   useEffect(() => {
     loadModel();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLoadingProgress((prevProgress) => {
-        if (prevProgress >= 0.9) {
-          clearInterval(interval);
-        }
-        return prevProgress + 0.1;
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
   }, []);
 
   if (!net) {
