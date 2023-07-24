@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Text,
-  ProgressBarAndroid,
-  ProgressViewIOS,
-} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+import ProgressBar from "../components/loaders/ProgressBar"; // Import the ProgressBar component
 
 export default function LoadModelScreen() {
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -37,22 +31,8 @@ export default function LoadModelScreen() {
     return () => clearInterval(interval);
   }, []);
 
-  const renderProgressBar = () => {
-    if (Platform.OS === "ios") {
-      return <ProgressViewIOS progress={loadingProgress} />;
-    } else {
-      return (
-        <ProgressBarAndroid
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={loadingProgress}
-        />
-      );
-    }
-  };
-
   if (!net) {
-    return renderProgressBar();
+    return <ProgressBar loadingProgress={loadingProgress} />;
   }
 
   return (
