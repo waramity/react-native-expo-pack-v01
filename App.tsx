@@ -8,6 +8,7 @@ import MainScreen from "./screens/MainScreen";
 import DefaultCameraScreen from "./screens/DefaultCameraScreen";
 import TensorCameraScreen from "./screens/TensorCameraScreen";
 import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
+import LoadModelScreen from "./screens/LoadModelScreen";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ const App: React.FC = (): React.ReactElement => {
             name="Realtime Object Recognize"
             component={RealtimeObjectRecognizeScreen}
           />
+          <Stack.Screen name="Load Model" component={LoadModelScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

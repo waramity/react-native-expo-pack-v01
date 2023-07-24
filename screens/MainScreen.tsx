@@ -13,7 +13,10 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Tensor Camera"
         onPress={() => navigation.navigate("Tensor Camera")}
       />
-
+      <Button
+        title="Load Model"
+        onPress={() => navigation.navigate("Load Model")}
+      />
       <Button
         title="Realtime Object Recognize"
         onPress={() => navigation.navigate("Realtime Object Recognize")}
