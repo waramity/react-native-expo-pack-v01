@@ -14,6 +14,7 @@ export default function RealtimeObjectRecognizeScreen() {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [net, setNet] = useState<mobilenet.MobileNet>();
 
+
   const loadModel = async () => {
     console.log("Load model");
     const model = await mobilenet.load();
@@ -28,7 +29,12 @@ export default function RealtimeObjectRecognizeScreen() {
       setHasPermission(status === "granted");
 
       console.log("set permission");
+	  setNet(await mobilenet.load());
+
+    console.log("model loaded");
+
     })();
+
     loadModel();
   }, []);
 
@@ -66,7 +72,6 @@ export default function RealtimeObjectRecognizeScreen() {
     return <View />;
   }
   if (hasPermission === false) {
-    console.log("no permission");
     return <Text>No access to camera</Text>;
   }
   if (!net) {

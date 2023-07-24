@@ -5,7 +5,7 @@ import CameraComponent from "../components/common/CameraComponent";
 import { Camera, CameraType } from "expo-camera";
 import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
 import { GLView, ExpoWebGLRenderingContext } from "expo-gl";
-import * as tf from "@tensorflow/tfjs-core";
+import * as tf from "@tensorflow/tfjs";
 
 const TensorCamera = cameraWithTensors(Camera);
 
