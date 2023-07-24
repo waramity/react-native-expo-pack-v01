@@ -7,8 +7,10 @@ import * as tf from "@tensorflow/tfjs";
 import MainScreen from "./screens/MainScreen";
 import DefaultCameraScreen from "./screens/DefaultCameraScreen";
 import TensorCameraScreen from "./screens/TensorCameraScreen";
-import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
 import LoadModelScreen from "./screens/LoadModelScreen";
+import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
+import RealtimeHandTrackingScreen from "./screens/RealtimeHandTrackingScreen";
+
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
 const Stack = createNativeStackNavigator();
@@ -37,11 +39,17 @@ const App: React.FC = (): React.ReactElement => {
           <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="Default Camera" component={DefaultCameraScreen} />
           <Stack.Screen name="Tensor Camera" component={TensorCameraScreen} />
+
+          <Stack.Screen name="Load Model" component={LoadModelScreen} />
           <Stack.Screen
             name="Realtime Object Recognize"
             component={RealtimeObjectRecognizeScreen}
           />
-          <Stack.Screen name="Load Model" component={LoadModelScreen} />
+
+          <Stack.Screen
+            name="Realtime Hand Tracking"
+            component={RealtimeHandTrackingScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );

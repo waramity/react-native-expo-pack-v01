@@ -21,6 +21,10 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Realtime Object Recognize"
         onPress={() => navigation.navigate("Realtime Object Recognize")}
       />
+      <Button
+        title="Realtime Hand Tracking"
+        onPress={() => navigation.navigate("Realtime Hand Tracking")}
+      />
     </View>
   );
 };
