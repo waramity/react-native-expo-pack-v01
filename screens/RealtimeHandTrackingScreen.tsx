@@ -18,6 +18,7 @@ import ProgressBar from "../components/loaders/ProgressBar"; // Import the Progr
 import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
 
 import { handleCameraStream } from "../utils/cameraUtils"; // Import the function from the utils folder
+import { textureDims } from "../utils/cameraConfig"; // Import the textureDims object
 
 const TensorCamera = cameraWithTensors(Camera);
 
@@ -53,17 +54,6 @@ export default function RealtimeHandTrackingScreen() {
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
   }
-
-  const textureDims =
-    Platform.OS === "ios"
-      ? {
-          height: 1920,
-          width: 1080,
-        }
-      : {
-          height: 1200,
-          width: 1600,
-        };
 
   return (
     <View style={styles.container}>
