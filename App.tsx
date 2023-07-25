@@ -10,6 +10,7 @@ import TensorCameraScreen from "./screens/TensorCameraScreen";
 import LoadModelScreen from "./screens/LoadModelScreen";
 import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
 import RealtimeHandTrackingScreen from "./screens/RealtimeHandTrackingScreen";
+import ObjectRecognizeImagePickerScreen from "./screens/ObjectRecognizeImagePickerScreen";
 
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
@@ -47,9 +48,16 @@ const App: React.FC = (): React.ReactElement => {
           />
 
           <Stack.Screen
+
             name="Realtime Hand Tracking"
             component={RealtimeHandTrackingScreen}
           />
+
+          <Stack.Screen
+            name="Object Recognize Image Picker"
+            component={ObjectRecognizeImagePickerScreen}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
