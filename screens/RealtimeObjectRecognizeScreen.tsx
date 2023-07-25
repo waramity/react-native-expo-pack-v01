@@ -25,7 +25,7 @@ const TensorCamera = cameraWithTensors(Camera);
 export default function RealtimeObjectRecognizeScreen() {
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
-  const model = useModelLoader();
+  const model = useModelLoader("mobilenet");
   const [classifiedText, setClassifiedText] = useState("Initial Text");
 
   useEffect(() => {

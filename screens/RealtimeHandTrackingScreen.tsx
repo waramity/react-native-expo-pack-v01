@@ -52,7 +52,6 @@ const HAND_CONNECTIONS = [
 ];
 
 export default function RealtimeHandTrackingScreen() {
-  
   const [model, setModel] = useState<handpose.HandPose | null>(null);
   let context = useRef<CanvasRenderingContext2D>();
   let canvas = useRef<Canvas>();
@@ -79,8 +78,8 @@ export default function RealtimeHandTrackingScreen() {
           console.log(err);
         });
 
-        setTimeout(loop, 1000 / FPS);
-      };
+      setTimeout(loop, 1000 / FPS);
+    };
     loop();
   }
 

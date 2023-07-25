@@ -11,7 +11,7 @@ import { useModelLoader } from "../hooks/useModelLoader"; // Import the custom h
 
 export default function LoadModelScreen() {
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
-  const model = useModelLoader();
+  const model = useModelLoader("mobilenet");
 
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
