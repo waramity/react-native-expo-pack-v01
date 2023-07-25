@@ -8,25 +8,25 @@ project-name/\
 ├── components/\
 │ ├── common/\
 │ ├── loaders/\
-│ │ └── ProgressBar.js\
+│ │ └── ProgressBar.tsx\
 │ ├── screens/\
 │ └── ...\
 ├── navigation/\
-│ ├── AppNavigator.js\
+│ ├── AppNavigator.tsx\
 │ └── ...\
 ├── screens/\
-│ ├── HomeScreen.js\
-│ ├── ProfileScreen.js\
+│ ├── HomeScreen.tsx\
+│ ├── ProfileScreen.tsx\
 │ └── ...\
 ├── services/\
-│ ├── api.js\
-│ ├── auth.js\
+│ ├── api.ts\
+│ ├── auth.ts\
 │ └── ...\
 ├── utils/\
-│ ├── helpers.js\
-│ ├── constants.js\
-│ └── useLoadingProgress.js\
-├── App.js\
+│ ├── helpers.ts\
+│ ├── constants.ts\
+│ └── useLoadingProgress.ts\
+├── App.tsx\
 ├── package.json\
 ├── yarn.lock (or package-lock.json)\
 └── ...\
