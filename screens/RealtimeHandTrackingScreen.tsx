@@ -17,6 +17,8 @@ import ProgressBar from "../components/loaders/ProgressBar"; // Import the Progr
 
 import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
 
+import { handleCameraStream } from "../utils/cameraUtils"; // Import the function from the utils folder
+
 const TensorCamera = cameraWithTensors(Camera);
 
 const MODEL_CONFIG = {
@@ -31,83 +33,22 @@ export default function RealtimeHandTrackingScreen() {
   const model = useModelLoader("handpose");
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
 
-  let frame = 0;
-  const computeRecognitionEveryNFrames = 60;
+  async function imageProcessing(nextImageTensor) {
+    // const objects = await model.classify(nextImageTensor);
+    // setClassifiedText(objects.map((object) => object.className));
 
-  // const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
-  //   const loop = async () => {
-  //     if (model) {
-  //       if (frame % computeRecognitionEveryNFrames === 0) {
-  //         const nextImageTensor = images.next().value;
-  //         if (nextImageTensor) {
-  //           const objects = await model.classify(nextImageTensor);
-  //           setClassifiedText(objects.map((object) => object.className));
-  //           tf.dispose([nextImageTensor]);
-  //         }
-  //       }
-  //       frame += 1;
-  //       frame = frame % computeRecognitionEveryNFrames;
-  //     }
-  //
-  //     requestAnimationFrame(loop);
-  //   };
-  //   loop();
-  // };
+    console.log("kuy");
 
-  function handleCameraStream(images: IterableIterator<tf.Tensor3D>) {
-    const loop = async () => {
-      if (model) {
-        if (frame % computeRecognitionEveryNFrames === 0) {
-          const nextImageTensor = images.next().value;
-          if (nextImageTensor) {
-            console.log("kuy");
-
-            model
-              .estimateHands(nextImageTensor)
-              .then((predictions) => {
-                mapPoints(predictions, nextImageTensor);
-                tf.dispose(nextImageTensor);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            tf.dispose([nextImageTensor]);
-          }
-        }
-        frame += 1;
-        frame = frame % computeRecognitionEveryNFrames;
-      }
-
-      requestAnimationFrame(loop);
-    };
-    loop();
+    model
+      .estimateHands(nextImageTensor)
+      .then((predictions) => {
+        mapPoints(predictions, nextImageTensor);
+        tf.dispose(nextImageTensor);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
-  // function handleCameraStream(images: any) {
-  //   const loop = async () => {
-  //     if (!isModelReady) {
-  //       setTimeout(loop, 1000 / FPS);
-  //       return;
-  //     }
-  //
-  //     const nextImageTensor = images.next().value;
-  //
-  //     if (!model || !nextImageTensor) throw new Error("no model");
-  //
-  //     model
-  //       .estimateHands(nextImageTensor)
-  //       .then((predictions) => {
-  //         mapPoints(predictions, nextImageTensor);
-  //         tf.dispose(nextImageTensor);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //
-  //     setTimeout(loop, 1000 / FPS);
-  //   };
-  //   loop();
-  // }
 
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
@@ -128,7 +69,7 @@ export default function RealtimeHandTrackingScreen() {
     <View style={styles.container}>
       <TensorCamera
         style={styles.camera}
-        onReady={handleCameraStream}
+        onReady={(images) => handleCameraStream(model, images, imageProcessing)}
         resizeHeight={200}
         resizeWidth={152}
         resizeDepth={3}
