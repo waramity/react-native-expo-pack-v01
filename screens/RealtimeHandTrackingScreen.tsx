@@ -57,7 +57,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function RealtimeHandTrackingScreen() {
   const model = useModelLoader("handpose");
-  const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
+  const loadingProgress = useLoadingProgress();
 
   let context = useRef<CanvasRenderingContext2D>();
   let canvas = useRef<Canvas>();
@@ -107,16 +107,13 @@ export default function RealtimeHandTrackingScreen() {
       return;
     }
 
-    // to match the size of the camera preview
     const scaleWidth = width / nextImageTensor.shape[1];
     const scaleHeight = height / nextImageTensor.shape[0];
 
     const flipHorizontal = true;
 
-    // We will clear the previous prediction
     context.current.clearRect(0, 0, width, height);
 
-    // Draw the keypoints and connections for each hand prediction
     for (const prediction of predictions) {
       const keypoints = prediction.landmarks.map((landmark) => {
         const x = flipHorizontal
@@ -165,7 +162,7 @@ export default function RealtimeHandTrackingScreen() {
         autorender={true}
         cameraTextureHeight={textureDims.height}
         cameraTextureWidth={textureDims.width}
-        useCustomShadersToResize={false} // Add this property
+        useCustomShadersToResize={false}
       />
 
       <Canvas style={styles.canvas} ref={handleCanvas} />
