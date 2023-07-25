@@ -31,19 +31,63 @@ export default function RealtimeHandTrackingScreen() {
   const model = useModelLoader("mobilenet");
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
 
+  const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
+    const loop = async () => {
+      if (model) {
+        if (frame % computeRecognitionEveryNFrames === 0) {
+          const nextImageTensor = images.next().value;
+          if (nextImageTensor) {
+            const objects = await model.classify(nextImageTensor);
+            setClassifiedText(objects.map((object) => object.className));
+            tf.dispose([nextImageTensor]);
+          }
+        }
+        frame += 1;
+        frame = frame % computeRecognitionEveryNFrames;
+      }
+
+      requestAnimationFrame(loop);
+    };
+    loop();
+  };
+
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
   }
 
+  const textureDims =
+    Platform.OS === "ios"
+      ? {
+          height: 1920,
+          width: 1080,
+        }
+      : {
+          height: 1200,
+          width: 1600,
+        };
+
   return (
     <View style={styles.container}>
-      <Text>Model load success</Text>
+      <TensorCamera
+        style={styles.camera}
+        onReady={handleCameraStream}
+        resizeHeight={200}
+        resizeWidth={152}
+        resizeDepth={3}
+        autorender={true}
+        cameraTextureHeight={textureDims.height}
+        cameraTextureWidth={textureDims.width}
+        useCustomShadersToResize={false} // Add this property
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  camera: {
     flex: 1,
   },
 });
