@@ -28,17 +28,49 @@ const MODEL_CONFIG = {
 };
 
 export default function RealtimeHandTrackingScreen() {
-  const model = useModelLoader("mobilenet");
+  const model = useModelLoader("handpose");
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
 
-  const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
+  let frame = 0;
+  const computeRecognitionEveryNFrames = 60;
+
+  // const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
+  //   const loop = async () => {
+  //     if (model) {
+  //       if (frame % computeRecognitionEveryNFrames === 0) {
+  //         const nextImageTensor = images.next().value;
+  //         if (nextImageTensor) {
+  //           const objects = await model.classify(nextImageTensor);
+  //           setClassifiedText(objects.map((object) => object.className));
+  //           tf.dispose([nextImageTensor]);
+  //         }
+  //       }
+  //       frame += 1;
+  //       frame = frame % computeRecognitionEveryNFrames;
+  //     }
+  //
+  //     requestAnimationFrame(loop);
+  //   };
+  //   loop();
+  // };
+
+  function handleCameraStream(images: IterableIterator<tf.Tensor3D>) {
     const loop = async () => {
       if (model) {
         if (frame % computeRecognitionEveryNFrames === 0) {
           const nextImageTensor = images.next().value;
           if (nextImageTensor) {
-            const objects = await model.classify(nextImageTensor);
-            setClassifiedText(objects.map((object) => object.className));
+            console.log("kuy");
+
+            model
+              .estimateHands(nextImageTensor)
+              .then((predictions) => {
+                mapPoints(predictions, nextImageTensor);
+                tf.dispose(nextImageTensor);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
             tf.dispose([nextImageTensor]);
           }
         }
@@ -49,7 +81,33 @@ export default function RealtimeHandTrackingScreen() {
       requestAnimationFrame(loop);
     };
     loop();
-  };
+  }
+
+  // function handleCameraStream(images: any) {
+  //   const loop = async () => {
+  //     if (!isModelReady) {
+  //       setTimeout(loop, 1000 / FPS);
+  //       return;
+  //     }
+  //
+  //     const nextImageTensor = images.next().value;
+  //
+  //     if (!model || !nextImageTensor) throw new Error("no model");
+  //
+  //     model
+  //       .estimateHands(nextImageTensor)
+  //       .then((predictions) => {
+  //         mapPoints(predictions, nextImageTensor);
+  //         tf.dispose(nextImageTensor);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //
+  //     setTimeout(loop, 1000 / FPS);
+  //   };
+  //   loop();
+  // }
 
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
