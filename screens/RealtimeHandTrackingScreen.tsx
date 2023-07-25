@@ -30,16 +30,40 @@ const MODEL_CONFIG = {
   scoreThreshold: 0.8, // confidence
 };
 
+const HAND_CONNECTIONS = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4], // Thumb
+  [0, 5],
+  [5, 6],
+  [6, 7],
+  [7, 8], // Index
+  [0, 9],
+  [9, 10],
+  [10, 11],
+  [11, 12], // Middle
+  [0, 13],
+  [13, 14],
+  [14, 15],
+  [15, 16], // Ring
+  [0, 17],
+  [17, 18],
+  [18, 19],
+  [19, 20], // Pinky
+];
+
+const { width, height } = Dimensions.get("window");
+
 export default function RealtimeHandTrackingScreen() {
   const model = useModelLoader("handpose");
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
 
+  let context = useRef<CanvasRenderingContext2D>();
+  let canvas = useRef<Canvas>();
+
   async function imageProcessing(nextImageTensor) {
-    // const objects = await model.classify(nextImageTensor);
-    // setClassifiedText(objects.map((object) => object.className));
-
     console.log("kuy");
-
     model
       .estimateHands(nextImageTensor)
       .then((predictions) => {
@@ -50,6 +74,81 @@ export default function RealtimeHandTrackingScreen() {
         console.log(err);
       });
   }
+
+  function drawKeypoints(keypoints: any[][], ctx: CanvasRenderingContext2D) {
+    keypoints.forEach((keypoint: any[]) => {
+      ctx.beginPath();
+      ctx.arc(keypoint[0], keypoint[1], 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "red";
+      ctx.fill();
+    });
+  }
+
+  function drawConnections(
+    pairs: number[][][] | [any, any][],
+    ctx: CanvasRenderingContext2D
+  ) {
+    ctx.beginPath();
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 2;
+    pairs.forEach(([start, end]) => {
+      ctx.moveTo(start[0], start[1]);
+      ctx.lineTo(end[0], end[1]);
+    });
+    ctx.stroke();
+  }
+
+  function mapPoints(
+    predictions: handpose.AnnotatedPrediction[],
+    nextImageTensor: any
+  ) {
+    if (!context.current || !canvas.current) {
+      console.log("no context or canvas");
+      return;
+    }
+
+    // to match the size of the camera preview
+    const scaleWidth = width / nextImageTensor.shape[1];
+    const scaleHeight = height / nextImageTensor.shape[0];
+
+    const flipHorizontal = true;
+
+    // We will clear the previous prediction
+    context.current.clearRect(0, 0, width, height);
+
+    // Draw the keypoints and connections for each hand prediction
+    for (const prediction of predictions) {
+      const keypoints = prediction.landmarks.map((landmark) => {
+        const x = flipHorizontal
+          ? canvas.current.width - landmark[0] * scaleWidth
+          : landmark[0] * scaleWidth;
+        const y = landmark[1] * scaleHeight;
+        return [x, y];
+      });
+
+      drawKeypoints(keypoints, context.current);
+      drawConnections(
+        HAND_CONNECTIONS.map(([startIdx, endIdx]) => [
+          keypoints[startIdx],
+          keypoints[endIdx],
+        ]),
+        context.current
+      );
+    }
+  }
+
+  const handleCanvas = async (can: Canvas) => {
+    if (can) {
+      can.width = width;
+      can.height = height;
+      const ctx: CanvasRenderingContext2D = can.getContext("2d");
+      context.current = ctx;
+      ctx.strokeStyle = "red";
+      ctx.fillStyle = "red";
+      ctx.lineWidth = 3;
+      canvas.current = can;
+    }
+  };
 
   if (!model) {
     return <ProgressBar loadingProgress={loadingProgress} />;
@@ -68,6 +167,8 @@ export default function RealtimeHandTrackingScreen() {
         cameraTextureWidth={textureDims.width}
         useCustomShadersToResize={false} // Add this property
       />
+
+      <Canvas style={styles.canvas} ref={handleCanvas} />
     </View>
   );
 }
@@ -78,5 +179,11 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+  },
+  canvas: {
+    position: "absolute",
+    zIndex: 1000000,
+    width: "100%",
+    height: "100%",
   },
 });
