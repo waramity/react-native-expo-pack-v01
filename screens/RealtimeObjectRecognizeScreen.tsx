@@ -19,21 +19,15 @@ import ProgressBar from "../components/loaders/ProgressBar"; // Import the Progr
 import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
 
 import { useModelLoader } from "../hooks/useModelLoader"; // Import the custom hook
+import { useCameraPermission } from "../services/useCameraPermission"; // Import the custom hook
 
 const TensorCamera = cameraWithTensors(Camera);
 
 export default function RealtimeObjectRecognizeScreen() {
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
-  const [hasPermission, setHasPermission] = useState<null | boolean>(null);
+  const hasPermission = useCameraPermission(); // Use the custom hook to get the camera permission
   const model = useModelLoader("mobilenet");
   const [classifiedText, setClassifiedText] = useState("Initial Text");
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
 
   let frame = 0;
   const computeRecognitionEveryNFrames = 60;
