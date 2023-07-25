@@ -20,6 +20,7 @@ import useLoadingProgress from "../utils/useLoadingProgress"; // Import the cust
 
 import { useModelLoader } from "../hooks/useModelLoader"; // Import the custom hook
 import { useCameraPermission } from "../services/useCameraPermission"; // Import the custom hook
+import { handleCameraStream } from "../utils/cameraUtils"; // Import the function from the utils folder
 
 const TensorCamera = cameraWithTensors(Camera);
 
@@ -29,28 +30,10 @@ export default function RealtimeObjectRecognizeScreen() {
   const model = useModelLoader("mobilenet");
   const [classifiedText, setClassifiedText] = useState("Initial Text");
 
-  let frame = 0;
-  const computeRecognitionEveryNFrames = 60;
-
-  const handleCameraStream = (images: IterableIterator<tf.Tensor3D>) => {
-    const loop = async () => {
-      if (model) {
-        if (frame % computeRecognitionEveryNFrames === 0) {
-          const nextImageTensor = images.next().value;
-          if (nextImageTensor) {
-            const objects = await model.classify(nextImageTensor);
-            setClassifiedText(objects.map((object) => object.className));
-            tf.dispose([nextImageTensor]);
-          }
-        }
-        frame += 1;
-        frame = frame % computeRecognitionEveryNFrames;
-      }
-
-      requestAnimationFrame(loop);
-    };
-    loop();
-  };
+  async function imageProcessing(nextImageTensor) {
+    const objects = await model.classify(nextImageTensor);
+    setClassifiedText(objects.map((object) => object.className));
+  }
 
   if (hasPermission === null) {
     return <View />;
@@ -79,7 +62,7 @@ export default function RealtimeObjectRecognizeScreen() {
     <View style={styles.container}>
       <TensorCamera
         style={styles.camera}
-        onReady={handleCameraStream}
+        onReady={(images) => handleCameraStream(model, images, imageProcessing)} // Use the function from the utils folder
         resizeHeight={200}
         resizeWidth={152}
         resizeDepth={3}
