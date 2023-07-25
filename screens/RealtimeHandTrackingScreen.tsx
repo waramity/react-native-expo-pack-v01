@@ -63,7 +63,6 @@ export default function RealtimeHandTrackingScreen() {
   let canvas = useRef<Canvas>();
 
   async function imageProcessing(nextImageTensor) {
-    console.log("kuy");
     model
       .estimateHands(nextImageTensor)
       .then((predictions) => {
