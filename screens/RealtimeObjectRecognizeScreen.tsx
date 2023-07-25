@@ -35,11 +35,7 @@ export default function RealtimeObjectRecognizeScreen() {
     setClassifiedText(objects.map((object) => object.className));
   }
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-
-  if (hasPermission === false) {
+  if (hasPermission === false || hasPermission == null) {
     return <Text>No access to camera</Text>;
   }
 
