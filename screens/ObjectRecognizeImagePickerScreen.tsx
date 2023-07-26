@@ -41,6 +41,10 @@ export default function ObjectRecognizeImagePickerScreen() {
     }
   };
 
+  const clearPredictions = () => {
+    setPredictions(null);
+  };
+
   const selectImage = async () => {
     try {
       let response = await ImagePicker.launchImageLibraryAsync({
@@ -83,6 +87,22 @@ export default function ObjectRecognizeImagePickerScreen() {
         onPress={model ? selectImage : undefined}
         disabled={model ? false : true}
       />
+      {predictions ? (
+        <View style={styles.predictions}>
+          <Text
+            style={{
+              marginBottom: 20,
+            }}
+          >
+            I'm {predictions[0].probability.toFixed(2)}% sure it's a{" "}
+            {predictions[0].className.toLowerCase()}
+            {", "}
+            it might also be a {predictions[1].className.toLowerCase()} or{" "}
+            {predictions[2].className.toLowerCase()}
+          </Text>
+          <Button title="Clear" onPress={clearPredictions} />
+        </View>
+      ) : null}
     </View>
   );
 }
