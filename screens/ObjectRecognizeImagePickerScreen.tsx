@@ -110,5 +110,15 @@ export default function ObjectRecognizeImagePickerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  predictions: {
+    borderColor: "grey",
+    borderWidth: 1,
+    width: 300,
+    padding: 20,
+    margin: 20,
   },
 });
