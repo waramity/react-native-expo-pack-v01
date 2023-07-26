@@ -11,6 +11,7 @@ import LoadModelScreen from "./screens/LoadModelScreen";
 import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScreen";
 import RealtimeHandTrackingScreen from "./screens/RealtimeHandTrackingScreen";
 import ObjectRecognizeImagePickerScreen from "./screens/ObjectRecognizeImagePickerScreen";
+import BoundingBoxScreen from "./screens/BoundingBoxScreen";
 
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
@@ -56,6 +57,11 @@ const App: React.FC = (): React.ReactElement => {
           <Stack.Screen
             name="Object Recognize Image Picker"
             component={ObjectRecognizeImagePickerScreen}
+          />
+
+          <Stack.Screen
+            name="Bounding Box"
+            component={BoundingBoxScreen}
           />
 
         </Stack.Navigator>

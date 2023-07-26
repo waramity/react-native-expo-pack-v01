@@ -29,6 +29,10 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Object Recognize Image Picker"
         onPress={() => navigation.navigate("Object Recognize Image Picker")}
       />
+      <Button
+        title="Bounding Box"
+        onPress={() => navigation.navigate("Bounding Box")}
+      />
     </View>
   );
 };
