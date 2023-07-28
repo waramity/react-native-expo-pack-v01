@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Platform, Text } from "react-native";
 import CameraComponent from "../components/common/CameraComponent";
@@ -26,16 +25,6 @@ const VisionCameraScreen: React.FC = (): React.ReactElement => {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  const textureDims =
-    Platform.OS === "ios"
-      ? {
-          height: 1920,
-          width: 1080,
-        }
-      : {
-          height: 1200,
-          width: 1600,
-        };
 
   return (
     <View style={styles.container}>
