@@ -33,6 +33,10 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Bounding Box"
         onPress={() => navigation.navigate("Bounding Box")}
       />
+      <Button
+        title="Vision Camera"
+        onPress={() => navigation.navigate("Vision Camera")}
+      />
     </View>
   );
 };

@@ -12,6 +12,7 @@ import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScre
 import RealtimeHandTrackingScreen from "./screens/RealtimeHandTrackingScreen";
 import ObjectRecognizeImagePickerScreen from "./screens/ObjectRecognizeImagePickerScreen";
 import BoundingBoxScreen from "./screens/BoundingBoxScreen";
+import VisionCameraScreen from "./screens/VisionCameraScreen";
 
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
@@ -65,6 +66,10 @@ const App: React.FC = (): React.ReactElement => {
           <Stack.Screen
             name="Bounding Box"
             component={BoundingBoxScreen}
+          />
+          <Stack.Screen
+            name="Vision Camera"
+            component={VisionCameraScreen}
           />
 
         </Stack.Navigator>
