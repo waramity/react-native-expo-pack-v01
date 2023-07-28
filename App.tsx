@@ -15,6 +15,9 @@ import BoundingBoxScreen from "./screens/BoundingBoxScreen";
 
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
+import 'react-native-reanimated'
+
+
 const Stack = createNativeStackNavigator();
 
 interface AppState {
