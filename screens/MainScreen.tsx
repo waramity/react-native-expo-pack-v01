@@ -33,6 +33,11 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         title="Bounding Box"
         onPress={() => navigation.navigate("Bounding Box")}
       />
+
+      <Button
+        title="Tflite React Native"
+        onPress={() => navigation.navigate("Tflite React Native")}
+      />
     </View>
   );
 };

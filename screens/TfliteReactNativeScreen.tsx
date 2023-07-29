@@ -1,159 +1,63 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import CameraComponent from "../components/common/CameraComponent";
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, Text, View, Dimensions, Platform } from "react-native";
 
-import { Camera, CameraType } from "expo-camera";
-import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
-import { GLView, ExpoWebGLRenderingContext } from "expo-gl";
+import { Camera } from "expo-camera";
+
 import * as tf from "@tensorflow/tfjs";
+import * as posedetection from "@tensorflow-models/pose-detection";
+import * as ScreenOrientation from "expo-screen-orientation";
+import {
+  bundleResourceIO,
+  cameraWithTensors,
+} from "@tensorflow/tfjs-react-native";
+import Svg, { Circle } from "react-native-svg";
+import { ExpoWebGLRenderingContext } from "expo-gl";
+import { CameraType } from "expo-camera/build/Camera.types";
 
-import Tflite from "tflite-react-native";
+const TensorCamera = cameraWithTensors(Camera);
 
-let tflite = new Tflite();
+const IS_ANDROID = Platform.OS === "android";
+const IS_IOS = Platform.OS === "ios";
 
-const height = 350;
-const width = 350;
-const blue = "#25d5fd";
-const mobile = "MobileNet";
-const ssd = "SSD MobileNet";
-const yolo = "Tiny YOLOv2";
-const deeplab = "Deeplab";
-const posenet = "PoseNet";
+const CAM_PREVIEW_WIDTH = Dimensions.get("window").width;
+const CAM_PREVIEW_HEIGHT = CAM_PREVIEW_WIDTH / (IS_IOS ? 9 / 16 : 3 / 4);
+
+const MIN_KEYPOINT_SCORE = 0.3;
+
+const OUTPUT_TENSOR_WIDTH = 180;
+const OUTPUT_TENSOR_HEIGHT = OUTPUT_TENSOR_WIDTH / (IS_IOS ? 9 / 16 : 3 / 4);
+
+const AUTO_RENDER = false;
+
+const LOAD_MODEL_FROM_BUNDLE = false;
 
 const TfliteReactNativeScreen: React.FC = (): React.ReactElement => {
-  const [model, setModel] = useState(null);
-  const [source, setSource] = useState(null);
-  const [imageHeight, setImageHeight] = useState(height);
-  const [imageWidth, setImageWidth] = useState(width);
-
-  function onSelectModel(model) {
-    setModel({ model });
-    switch (model) {
-      case ssd:
-        var modelFile = "models/ssd_mobilenet.tflite";
-        var labelsFile = "models/ssd_mobilenet.txt";
-        break;
-      case yolo:
-        var modelFile = "models/yolov2_tiny.tflite";
-        var labelsFile = "models/yolov2_tiny.txt";
-        break;
-      case deeplab:
-        var modelFile = "models/deeplabv3_257_mv_gpu.tflite";
-        var labelsFile = "models/deeplabv3_257_mv_gpu.txt";
-        break;
-      case posenet:
-        var modelFile = "models/posenet_mv1_075_float_from_checkpoints.tflite";
-        var labelsFile = "";
-        break;
-      default:
-        var modelFile = "models/mobilenet_v1_1.0_224.tflite";
-        var labelsFile = "models/mobilenet_v1_1.0_224.txt";
-    }
-    tflite.loadModel(
-      {
-        model: modelFile,
-        labels: labelsFile,
-      },
-      (err, res) => {
-        if (err) console.log(err);
-        else console.log(res);
-      }
-    );
-  }
-
-  const renderButton = (model: string) => {
-    return (
-      <TouchableOpacity style={styles.button} onPress={onSelectModel(model)}>
-        <Text style={styles.buttonText}>{m}</Text>
-      </TouchableOpacity>
-    );
-  };
+  const cameraRef = useRef(null);
+  const [tfReady, setTfReady] = useState(false);
+  const [model, setModel] = useState<posedetection.PoseDetector>();
+  const [poses, setPoses] = useState<posedetection.Pose[]>();
+  const [fps, setFps] = useState(0);
+  const [orientation, setOrientation] = useState<
+    ScreenOrientation.Orientation
+  >();
+  const [cameraType, setCameraType] = useState<CameraType>(
+    Camera.Constants.Type.front
+  );
+  const rafId = useRef<number | null>(null);
 
   return (
     <View style={styles.container}>
-      {model ? (
-        <TouchableOpacity
-          style={[
-            styles.imageContainer,
-            {
-              height: imageHeight,
-              width: imageWidth,
-              borderWidth: source ? 0 : 2,
-            },
-          ]}
-          onPress={this.onSelectImage.bind(this)}
-        >
-          {source ? (
-            <Image
-              source={source}
-              style={{
-                height: imageHeight,
-                width: imageWidth,
-              }}
-              resizeMode="contain"
-            />
-          ) : (
-            <Text style={styles.text}>Select Picture</Text>
-          )}
-          <View style={styles.boxes}>{this.renderResults()}</View>
-        </TouchableOpacity>
-      ) : (
-        <View>
-          {renderButton(mobile)}
-          {renderButton(ssd)}
-          {renderButton(yolo)}
-          {renderButton(deeplab)}
-          {renderButton(posenet)}
-        </View>
-      )}
+      <Text>Test</Text>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-  },
-  imageContainer: {
-    borderColor: blue,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  text: {
-    color: blue,
-  },
-  button: {
-    width: 200,
-    backgroundColor: blue,
-    borderRadius: 10,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 15,
-  },
-  box: {
-    position: "absolute",
-    borderColor: blue,
-    borderWidth: 2,
-  },
-  boxes: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
   },
 });
 

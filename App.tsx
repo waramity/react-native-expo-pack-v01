@@ -12,6 +12,7 @@ import RealtimeObjectRecognizeScreen from "./screens/RealtimeObjectRecognizeScre
 import RealtimeHandTrackingScreen from "./screens/RealtimeHandTrackingScreen";
 import ObjectRecognizeImagePickerScreen from "./screens/ObjectRecognizeImagePickerScreen";
 import BoundingBoxScreen from "./screens/BoundingBoxScreen";
+import TfliteReactNativeScreen from "./screens/TfliteReactNativeScreen";
 
 import * as mobilenet from "@tensorflow-models/mobilenet";
 
@@ -49,7 +50,6 @@ const App: React.FC = (): React.ReactElement => {
           />
 
           <Stack.Screen
-
             name="Realtime Hand Tracking"
             component={RealtimeHandTrackingScreen}
           />
@@ -59,11 +59,12 @@ const App: React.FC = (): React.ReactElement => {
             component={ObjectRecognizeImagePickerScreen}
           />
 
-          <Stack.Screen
-            name="Bounding Box"
-            component={BoundingBoxScreen}
-          />
+          <Stack.Screen name="Bounding Box" component={BoundingBoxScreen} />
 
+          <Stack.Screen
+            name="Tflite React Native"
+            component={TfliteReactNativeScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
