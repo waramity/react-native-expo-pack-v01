@@ -45,11 +45,39 @@ const TfliteReactNativeScreen: React.FC = (): React.ReactElement => {
   );
   const rafId = useRef<number | null>(null);
 
-  return (
-    <View style={styles.container}>
-      <Text>Test</Text>
-    </View>
-  );
+  if (!tfReady) {
+    return (
+      <View style={styles.loadingMsg}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  } else {
+    return (
+      // Note that you don't need to specify `cameraTextureWidth` and
+      // `cameraTextureHeight` prop in `TensorCamera` below.
+      <View
+        style={
+          isPortrait() ? styles.containerPortrait : styles.containerLandscape
+        }
+      >
+        <TensorCamera
+          ref={cameraRef}
+          style={styles.camera}
+          autorender={AUTO_RENDER}
+          type={cameraType}
+          // tensor related props
+          resizeWidth={getOutputTensorWidth()}
+          resizeHeight={getOutputTensorHeight()}
+          resizeDepth={3}
+          rotation={getTextureRotationAngleInDegrees()}
+          onReady={handleCameraStream}
+        />
+        {renderPose()}
+        {renderFps()}
+        {renderCameraTypeSwitcher()}
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
