@@ -11,6 +11,8 @@ import * as FileSystem from "expo-file-system";
 
 import useLoadingProgress from "../utils/useLoadingProgress"; // Import the custom hook
 
+import ImagePickerComponent from "../components/common/ImagePickerComponent"; // Import the newly created component
+
 export default function ObjectRecognizeImagePickerScreen() {
   const loadingProgress = useLoadingProgress(); // Use the custom hook to get the loading progress
   const model = useModelLoader("mobilenet");
@@ -45,22 +47,9 @@ export default function ObjectRecognizeImagePickerScreen() {
     setPredictions(null);
   };
 
-  const selectImage = async () => {
-    try {
-      let response = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        aspect: [4, 3],
-      });
-
-      if (!response.cancelled) {
-        const source = { uri: response.uri };
-        await setImage(source);
-        classifyImage(response.uri);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSelectImage = async (uri) => {
+    await setImage({ uri });
+    classifyImage(uri);
   };
 
   return (
@@ -82,11 +71,7 @@ export default function ObjectRecognizeImagePickerScreen() {
         onChangeText={(text) => setImage({ uri: text })}
         value={image.uri}
       />
-      <Button
-        title="Predict"
-        onPress={model ? selectImage : undefined}
-        disabled={model ? false : true}
-      />
+      <ImagePickerComponent onSelectImage={handleSelectImage} />
       {predictions ? (
         <View style={styles.predictions}>
           <Text
