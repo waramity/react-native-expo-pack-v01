@@ -35,8 +35,8 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
       />
 
       <Button
-        title="Tflite React Native"
-        onPress={() => navigation.navigate("Tflite React Native")}
+        title="Tfjs React Native"
+        onPress={() => navigation.navigate("Tfjs React Native")}
       />
     </View>
   );
